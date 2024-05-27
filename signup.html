@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up Page1</title>
+</head>
+<body>
+    <div id="signupForm">
+        <h1>Sign Up</h1>
+        <form id="signupForm" onsubmit="saveUser(event)">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" placeholder="enter your new username" required>
+            <br>
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" placeholder="enter your new password" required>
+            <br>
+            <button type="submit">Sign Up</button>
+        </form>
+        <hr>
+        <p>Already have an account? <a href="http://localhost/auth.html">Login</a></p>
+    </div>
+    <script>
+        function saveUser(event) {
+            event.preventDefault();
+            const newUsername = document.getElementById("newUsername").value;
+            const newPassword = document.getElementById("newPassword").value;
+
+            // Retrieve existing users or initialize an empty array
+            const existingUsers = JSON.parse(localStorage.getItem("users")) || {};
+
+            if (existingUsers[newUsername]) {
+                alert("Username already exists. Please choose a different username.");
+            } else {
+                // Save the new user in the associative array
+                existingUsers[newUsername] = newPassword;
+
+                // Save the updated users array to local storage
+                localStorage.setItem("users", JSON.stringify(existingUsers));
+
+                // Optionally, you can log the users array to the console for testing
+                console.log(existingUsers);
+
+                // Redirect to the login page
+                window.location.href = "http://localhost/auth.html";
+            }
+        }
+    </script>
+</body>
+</html>

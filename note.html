@@ -1,0 +1,97 @@
+<?php
+$noteText = filter_input(INPUT_POST, "noteText", FILTER_SANITIZE_STRING);
+?>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Note Taking Page</title>
+</head>
+
+<body>
+
+    <h1>Note Taking Page</h1>
+
+    <form id="noteForm" method="POST">
+    <textarea id="noteText" name="noteText" placeholder="Write your notes here..."></textarea>
+    <button type="button" id="saveButton" onclick="validateTheNote()">Save Note</button>
+</form>
+
+
+    <div id="savedNotes">
+        <h2>Saved Notes:</h2>
+        <ul id="notesList"></ul>
+    </div>
+
+    <script>
+        var notesArray = [];
+
+        function validateTheNote() {
+            var noteTextElement = document.getElementById('noteText');
+            if (noteTextElement.value.trim() !== '') {
+                saveNote();
+            } else {
+            alert('Please enter a value.');
+    }
+}
+
+
+        function saveNote() {
+            var noteText = document.getElementById('noteText').value;
+            notesArray.push(noteText);
+            displayNotes();
+            alert('Note saved:\n' + noteText);
+            clearNoteText();
+        }
+
+        function displayNotes() {
+            var notesList = document.getElementById('notesList');
+            notesList.innerHTML = '';
+
+            notesArray.forEach(function (note, index) {
+
+                var li = document.createElement('li');
+                li.textContent = note;
+
+                var editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = function () {
+                    editNote(index);
+                };
+
+                var removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.onclick = function () {
+                    removeNote(index);
+                };
+
+                li.appendChild(editButton);
+                li.appendChild(removeButton);
+                notesList.appendChild(li);
+            });
+        }
+
+        function clearNoteText() {
+            document.getElementById('noteText').value = '';
+        }
+
+        function editNote(index) {
+            var newNoteText = prompt('Edit the note:', notesArray[index]);
+            if (newNoteText !== null) {
+                notesArray[index] = newNoteText;
+                displayNotes();
+            }
+        }
+
+        function removeNote(index) {
+                notesArray.splice(index, 1);
+                displayNotes();
+     
+        }
+    </script>
+
+</body>
+
+</html>
